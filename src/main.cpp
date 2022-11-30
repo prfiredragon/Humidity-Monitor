@@ -55,6 +55,12 @@ bool dataCollect = false;
 int crcErrCount = 0;
 bool firstPublish = false;
 
+//RELAYS
+#define PIN_RELAY_1  2 // the Arduino pin, which connects to the IN1 pin of relay module
+#define PIN_RELAY_2  3 // the Arduino pin, which connects to the IN2 pin of relay module
+#define PIN_RELAY_3  4 // the Arduino pin, which connects to the IN3 pin of relay module
+#define PIN_RELAY_4  5 // the Arduino pin, which connects to the IN4 pin of relay module
+
 //----------------------------------------------------------------------
 void saveConfigCallback()
 {
@@ -415,12 +421,26 @@ void setup()
     {
       mqttclient.subscribe((topicStrg + "/wet_val").c_str());
       mqttclient.subscribe((topicStrg + "/dry_val").c_str());
+      mqttclient.subscribe((topicStrg + "/relay1").c_str());
+      mqttclient.subscribe((topicStrg + "/relay2").c_str());
+      mqttclient.subscribe((topicStrg + "/relay3").c_str());
+      mqttclient.subscribe((topicStrg + "/relay4").c_str());
     }
     else
     {
       mqttclient.subscribe((topicStrg + "/" + _settings._deviceName).c_str());
     }
   }
+
+
+
+// initialize digital pin as an output.
+  pinMode(PIN_RELAY_1, OUTPUT);
+  pinMode(PIN_RELAY_2, OUTPUT);
+  pinMode(PIN_RELAY_3, OUTPUT);
+  pinMode(PIN_RELAY_4, OUTPUT);
+
+
 }
 // end void setup
 
@@ -598,6 +618,62 @@ void callback(char *top, byte *payload, unsigned int length)
         csms.get.dry_val = messageTemp.toInt();
       
     }
+
+    // Switch the Discharging port
+    if (strcmp(top, (topicStrg + "/relay1").c_str()) == 0)
+    {
+
+      if (messageTemp == "on")
+      {
+        digitalWrite(PIN_RELAY_1, HIGH);;
+      }
+      if (messageTemp == "off")
+      {        
+        digitalWrite(PIN_RELAY_1, LOW);;
+      }
+    }
+
+    // Switch the Discharging port
+    if (strcmp(top, (topicStrg + "/relay2").c_str()) == 0)
+    {
+
+      if (messageTemp == "on")
+      {
+        digitalWrite(PIN_RELAY_2, HIGH);;
+      }
+      if (messageTemp == "off")
+      {        
+        digitalWrite(PIN_RELAY_2, LOW);;
+      }
+    }
+
+    // Switch the Discharging port
+    if (strcmp(top, (topicStrg + "/relay3").c_str()) == 0)
+    {
+
+      if (messageTemp == "on")
+      {
+        digitalWrite(PIN_RELAY_3, HIGH);;
+      }
+      if (messageTemp == "off")
+      {        
+        digitalWrite(PIN_RELAY_3, LOW);;
+      }
+    }
+
+    // Switch the Discharging port
+    if (strcmp(top, (topicStrg + "/relay4").c_str()) == 0)
+    {
+
+      if (messageTemp == "on")
+      {
+        digitalWrite(PIN_RELAY_4, HIGH);;
+      }
+      if (messageTemp == "off")
+      {        
+        digitalWrite(PIN_RELAY_4, LOW);;
+      }
+    }
   }
   else
   {
@@ -606,6 +682,58 @@ void callback(char *top, byte *payload, unsigned int length)
 
       csms.get.wet_val = mqttJsonAnswer["Pack"]["wet_val"];
       csms.get.dry_val = mqttJsonAnswer["Pack"]["dry_val"];
+
+    if (mqttJsonAnswer["Pack"]["relay1"] == "on")
+    {
+      digitalWrite(PIN_RELAY_1, HIGH);;
+    }
+    else if (mqttJsonAnswer["Pack"]["relay1"] == "off")
+    {
+      digitalWrite(PIN_RELAY_1, LOW);;
+    }
+    else
+    {
+
+    }
+
+    if (mqttJsonAnswer["Pack"]["relay2"] == "on")
+    {
+      digitalWrite(PIN_RELAY_2, HIGH);;
+    }
+    else if (mqttJsonAnswer["Pack"]["relay2"] == "off")
+    {
+      digitalWrite(PIN_RELAY_2, LOW);;
+    }
+    else
+    {
+
+    }
+
+    if (mqttJsonAnswer["Pack"]["relay3"] == "on")
+    {
+      digitalWrite(PIN_RELAY_3, HIGH);;
+    }
+    else if (mqttJsonAnswer["Pack"]["relay3"] == "off")
+    {
+      digitalWrite(PIN_RELAY_3, LOW);;
+    }
+    else
+    {
+
+    }
+
+    if (mqttJsonAnswer["Pack"]["relay4"] == "on")
+    {
+      digitalWrite(PIN_RELAY_4, HIGH);;
+    }
+    else if (mqttJsonAnswer["Pack"]["relay4"] == "off")
+    {
+      digitalWrite(PIN_RELAY_4, LOW);;
+    }
+    else
+    {
+
+    }
 
     
   }
