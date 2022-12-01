@@ -414,7 +414,7 @@ void setup()
     if (!_settings._mqttJson)
     {
       mqttclient.subscribe((topicStrg + "/get_wet_val").c_str());
-      mqttclient.subscribe((topicStrg + "/getdry_val").c_str());
+      mqttclient.subscribe((topicStrg + "/get_dry_val").c_str());
     }
     else
     {
